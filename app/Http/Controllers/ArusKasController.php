@@ -150,11 +150,13 @@ class ArusKasController extends Controller
         }        
         
         try {
-            $arus_kas_detail = Arus_Kas::
-                    where('status', '=', 'diterima')
-                    // ->whereMonth('created_at', '=', $request->sort_month)
-                    // ->whereYear('created_at', '=', $request->sort_year)
-                    ->get();
+            $arus_kas_detail = Arus_Kas::all();
+                    // Arus_Kas::select('created_at as tanggal', 'arus', 'nama', 
+                    // 'keterangan', 'total_biaya as biaya', 'status')
+                    // ->where('status', '=', 'diterima')
+                    // // ->whereMonth('created_at', '=', $request->sort_month)
+                    // // ->whereYear('created_at', '=', $request->sort_year)
+                    // ->get();
             dd($arus_kas_detail);
             $arus_kas_masuk = DB::table('arus_kas')
                     ->select(DB::raw('SUM(total_biaya) as ttl_masuk'))
