@@ -151,8 +151,8 @@ class ArusKasController extends Controller
         
         try {
             $arus_kas_detail = DB::table('arus_kas')
-                    ->select('created_at as tanggal', 'arus', 'nama', 
-                    'keterangan', 'total_biaya as biaya', 'status')
+                    ->select('created_at', 'arus', 'nama', 
+                    'keterangan', 'total_biaya', 'status')
                     ->where('status', '=', 'diterima')
                     // ->whereMonth('created_at', '=', $request->sort_month)
                     // ->whereYear('created_at', '=', $request->sort_year)
