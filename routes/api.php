@@ -22,6 +22,7 @@ Route::get('/kas/labarugi','ArusKasController@labaRugi');
 Route::get('/kas/masuk','ArusKasController@dataKasMasuk');
 Route::get('/kas/keluar','ArusKasController@dataKasKeluar');
 Route::get('/kas/arus','ArusKasController@dataKasArus');
+Route::get('/kas/status','ArusKasController@status');
 Route::get('/kas/{id}','ArusKasController@detail');
 Route::post('/kas/masuk','ArusKasController@createMasuk');
 Route::post('/kas/keluar','ArusKasController@createKeluar');

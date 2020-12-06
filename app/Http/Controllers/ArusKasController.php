@@ -360,6 +360,38 @@ class ArusKasController extends Controller
         }
     }
 
+    public function status()
+    {    
+        try {
+            $arus_kas_diterima = DB::table('arus_kas')
+                    ->select(DB::raw('COUNT(total_biaya) as count'))
+                    ->where([['status', '=', 'diterima']])
+                    ->get();   
+            $arus_kas_menunggu = DB::table('arus_kas')
+                    ->select(DB::raw('COUNT(total_biaya) as count'))
+                    ->where([['status', '=', 'menunggu']])
+                    ->get();  
+            $arus_kas_ditolak = DB::table('arus_kas')
+                    ->select(DB::raw('COUNT(total_biaya) as count'))
+                    ->where([['status', '=', 'ditolak']])
+                    ->get();    
+            
+            return response([
+                'status' => true,
+                'message' => 'Data telah di dapat',
+                'menunggu' => $arus_kas_menunggu[0]->count,
+                'tolak' => $arus_kas_ditolak[0]->count,
+                'terima' => $arus_kas_diterima[0]->count,
+            ], 200);
+                  
+        } catch (\Throwable $th) {
+            return response([
+                'status' => false,
+                'message' => $th
+            ], 500);
+        }
+    }
+
     public function validasi(Request $request)
     {
         $validationData = Validator::make($request->all(), [
@@ -422,7 +454,7 @@ class ArusKasController extends Controller
             return response([
                 'status' => false,
                 'message' => 'Data tidak dapat dihapus'
-            ], 404);
+            ], 400);
         } else {
             $arus_kas_id->delete();
             return response([
