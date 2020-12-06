@@ -205,6 +205,230 @@ class ArusKasController extends Controller
                 'message' => $th
             ], 500);
         }
+    }
+
+    public function dataKasMasuk(Request $request)
+    {
+        $validationData = Validator::make($request->all(), [
+            'sort_date_from' => 'required|date',
+            'sort_date_to' => 'required|date',
+        ]);
+
+        if ($validationData->fails()) {
+            return response([
+                'status' => false,
+                'message' => 'input sort salah'
+            ], 404);
+        }        
         
+        try {
+            $from = date($request->sort_date_from);
+            $to = date($request->sort_date_to);
+            $arus_kas_detail = Arus_Kas::select('created_at as tanggal', 'jenis as kategori', 'nama', 
+                    'keterangan', 'total_biaya as biaya', 'status')
+                    ->where([['arus', '=', 'masuk']])
+                    ->whereBetween('created_at', [$from, $to])
+                    ->get();
+
+            $arus_kas_masuk = DB::table('arus_kas')
+                    ->select(DB::raw('SUM(total_biaya) as ttl_masuk'))
+                    ->where([['status', '=', 'diterima'],['arus', '=', 'masuk']])
+                    ->whereBetween('created_at', [$from, $to])
+                    ->get();     
+            
+            if ($arus_kas_detail->count() == 0) {
+                return response([
+                    'status' => false,
+                    'message' => 'Data tidak dapat ditemukan'
+
+                ], 200);
+            } else {
+                return response([
+                    'status' => true,
+                    'message' => 'Data telah di dapat',
+                    'jumlah' => ($arus_kas_masuk[0]->ttl_masuk == null) ? 0 : $arus_kas_masuk[0]->ttl_masuk,
+                    'date_from' => $request->sort_date_from,
+                    'date_tp' => $request->sort_date_to,
+                    'data' => $arus_kas_detail
+                ], 200);
+            }            
+        } catch (\Throwable $th) {
+            return response([
+                'status' => false,
+                'message' => $th
+            ], 500);
+        }
+        
+    }
+
+    public function dataKasKeluar(Request $request)
+    {
+        $validationData = Validator::make($request->all(), [
+            'sort_date_from' => 'required|date',
+            'sort_date_to' => 'required|date',
+        ]);
+
+        if ($validationData->fails()) {
+            return response([
+                'status' => false,
+                'message' => 'input sort salah'
+            ], 404);
+        }        
+        
+        try {
+            $from = date($request->sort_date_from);
+            $to = date($request->sort_date_to);
+            $arus_kas_detail = Arus_Kas::select('created_at as tanggal', 'jenis as kategori', 'nama', 
+                    'keterangan', 'total_biaya as biaya', 'status')
+                    ->where([['arus', '=', 'keluar']])
+                    ->whereBetween('created_at', [$from, $to])
+                    ->get();
+
+            $arus_kas_keluar = DB::table('arus_kas')
+                    ->select(DB::raw('SUM(total_biaya) as ttl_keluar'))
+                    ->where([['status', '=', 'diterima'],['arus', '=', 'keluar']])
+                    ->whereBetween('created_at', [$from, $to])
+                    ->get();     
+            
+            if ($arus_kas_detail->count() == 0) {
+                return response([
+                    'status' => false,
+                    'message' => 'Data tidak dapat ditemukan'
+
+                ], 200);
+            } else {
+                return response([
+                    'status' => true,
+                    'message' => 'Data telah di dapat',
+                    'jumlah' => ($arus_kas_keluar[0]->ttl_keluar == null) ? 0 : $arus_kas_keluar[0]->ttl_keluar,
+                    'date_from' => $request->sort_date_from,
+                    'date_tp' => $request->sort_date_to,
+                    'data' => $arus_kas_detail
+                ], 200);
+            }            
+        } catch (\Throwable $th) {
+            return response([
+                'status' => false,
+                'message' => $th
+            ], 500);
+        }
+        
+    }
+
+    public function dataKasArus(Request $request)
+    {
+        $validationData = Validator::make($request->all(), [
+            'sort_date_from' => 'required|date',
+            'sort_date_to' => 'required|date',
+        ]);
+
+        if ($validationData->fails()) {
+            return response([
+                'status' => false,
+                'message' => 'input sort salah'
+            ], 404);
+        }        
+        
+        try {
+            $from = date($request->sort_date_from);
+            $to = date($request->sort_date_to);
+            $arus_kas_detail = Arus_Kas::select('created_at as tanggal', 'arus', 'nama', 
+                    'keterangan', 'total_biaya as biaya', 'status')
+                    ->whereBetween('created_at', [$from, $to])
+                    ->get();    
+
+            if ($arus_kas_detail->count() == 0) {
+                return response([
+                    'status' => false,
+                    'message' => 'Data tidak dapat ditemukan'
+
+                ], 200);
+            } else {
+                return response([
+                    'status' => true,
+                    'message' => 'Data telah di dapat',
+                    'date_from' => $request->sort_date_from,
+                    'date_tp' => $request->sort_date_to,
+                    'data' => $arus_kas_detail
+                ], 200);
+            }            
+        } catch (\Throwable $th) {
+            return response([
+                'status' => false,
+                'message' => $th
+            ], 500);
+        }
+    }
+
+    public function validasi(Request $request)
+    {
+        $validationData = Validator::make($request->all(), [
+            'id_arus_kas' => 'required|integer',
+            'status' => 'required|string',
+        ]);
+
+        if ($validationData->fails()) {
+            return response([
+                'status' => false,
+                'message' => 'input data salah'
+            ], 404);
+        }
+
+        try {
+            $arus_kas = Arus_Kas::find($request->input('id_arus_kas'));
+            if ($arus_kas == null) {
+                return response([
+                    'status' => false,
+                    'message' => 'Data tidak kas tidak ditemukan'
+                ], 404);
+            } 
+            
+            $arus_kas->status = $request->input('status');
+            $arus_kas->save();
+    
+            return response([
+                'status' => true,
+                'message' => 'Status kas telah diubah'
+            ], 200);
+        } catch (\Throwable $th) {
+            return response([
+                'status' => false,
+                'message' => 'Status kas gagal diubah'
+            ], 500);
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Kegiatan  $kegiatan
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Request $request)
+    {
+        $validationData = Validator::make($request->all(), [
+            'id_arus_kas' => 'required|integer',
+        ]);
+
+        if ($validationData->fails()) {
+            return response([
+                'status' => false,
+                'message' => 'id tidak ditemukan'
+            ], 404);
+        }
+
+        $arus_kas_id = Arus_Kas::find($request->id_arus_kas);
+        if ($arus_kas_id == null) {
+            return response([
+                'status' => false,
+                'message' => 'Data tidak dapat dihapus'
+            ], 404);
+        } else {
+            $arus_kas_id->delete();
+            return response([
+                'status' => true,
+                'message' => 'Data telah di hapus'
+            ], 200);
+        }
     }
 }
