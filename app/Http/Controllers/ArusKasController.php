@@ -150,7 +150,8 @@ class ArusKasController extends Controller
         }        
         
         try {
-            $arus_kas_detail = Arus_Kas::all();
+            $arus_kas_detail = Arus_Kas::select('created_at as tanggal', 'arus', 'nama', 
+                    'keterangan', 'total_biaya as biaya', 'status')->get();
                     // Arus_Kas::select('created_at as tanggal', 'arus', 'nama', 
                     // 'keterangan', 'total_biaya as biaya', 'status')
                     // ->where('status', '=', 'diterima')
