@@ -302,7 +302,7 @@ class ArusKasController extends Controller
                     'message' => 'Data telah di dapat',
                     'jumlah' => ($arus_kas_keluar[0]->ttl_keluar == null) ? 0 : $arus_kas_keluar[0]->ttl_keluar,
                     'date_from' => $request->sort_date_from,
-                    'date_tp' => $request->sort_date_to,
+                    'date_to' => $request->sort_date_to,
                     'data' => $arus_kas_detail
                 ], 200);
             }            
@@ -348,7 +348,7 @@ class ArusKasController extends Controller
                     'status' => true,
                     'message' => 'Data telah di dapat',
                     'date_from' => $request->sort_date_from,
-                    'date_tp' => $request->sort_date_to,
+                    'date_to' => $request->sort_date_to,
                     'data' => $arus_kas_detail
                 ], 200);
             }            
