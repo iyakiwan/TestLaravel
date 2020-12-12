@@ -150,7 +150,7 @@ class ArusKasController extends Controller
         }        
         
         try {
-            $arus_kas_detail = Arus_Kas::select('created_at as tanggal', 'arus', 'nama', 
+            $arus_kas_detail = Arus_Kas::select('created_at as tanggal',  'jenis as kategori', 'arus', 'nama', 
                     'keterangan', 'total_biaya as biaya', 'status')
                     ->where('status', '=', 'diterima')
                     ->whereMonth('created_at', '=', $request->sort_month)
@@ -334,7 +334,6 @@ class ArusKasController extends Controller
             $to = date($request->sort_date_to);
             $arus_kas_detail = Arus_Kas::select('created_at as tanggal', 'jenis as kategori', 'arus', 'nama', 
                     'keterangan', 'total_biaya as biaya', 'divisi', 'status')
-                    ->where('status', '=', 'diterima')
                     ->whereBetween('created_at', [$from, $to])
                     ->get();    
 
