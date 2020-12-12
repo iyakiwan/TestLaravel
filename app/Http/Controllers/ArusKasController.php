@@ -248,7 +248,7 @@ class ArusKasController extends Controller
                     'message' => 'Data telah di dapat',
                     'jumlah' => ($arus_kas_masuk[0]->ttl_masuk == null) ? 0 : $arus_kas_masuk[0]->ttl_masuk,
                     'date_from' => $request->sort_date_from,
-                    'date_tp' => $request->sort_date_to,
+                    'date_to' => $request->sort_date_to,
                     'data' => $arus_kas_detail
                 ], 200);
             }            
