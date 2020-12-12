@@ -333,7 +333,7 @@ class ArusKasController extends Controller
             $from = date($request->sort_date_from);
             $to = date($request->sort_date_to);
             $arus_kas_detail = Arus_Kas::select('created_at as tanggal', 'arus', 'nama', 
-                    'keterangan', 'total_biaya as biaya', 'status')
+                    'keterangan', 'total_biaya as biaya', 'divisi', 'status')
                     ->whereBetween('created_at', [$from, $to])
                     ->get();    
 
