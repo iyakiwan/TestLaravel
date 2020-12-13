@@ -185,7 +185,7 @@ class ViewFinanceController extends Controller
         return view('validasi',compact('data'));
     }
 
-    public function validation($id)
+    public function validation(Request $request, $id)
     {
         if (!$request->session()->has('login')) {
             return redirect()->route('view.login');
