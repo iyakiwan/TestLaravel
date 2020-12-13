@@ -248,7 +248,6 @@ class ViewFinanceController extends Controller
 
     public function loginAction(Request $request)
     {
-        
         $validationData = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required',
