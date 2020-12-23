@@ -34,5 +34,7 @@ Route::get('/validasi/{id}','ViewFinanceController@validation')->name('view.vali
 Route::post('/validasi/{id}/action','ViewFinanceController@validationAction')->name('view.validation.action');
 
 Route::get('/kas','ViewFinanceController@kasIndex')->name('view.kasIndex');
+Route::post('/kas','ViewFinanceController@kasCreate')->name('action.kasCreate');
+Route::delete('/kas/{id}','ViewFinanceController@kasDelete')->name('action.kasDelete');
 
 // Route::get('/home', 'ViewFinanceController@home')->name('home');

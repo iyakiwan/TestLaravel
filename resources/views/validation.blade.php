@@ -74,10 +74,10 @@
                 </div>
                 <div class="row">
                     <div class="col-4">
-                        Pegawai
+                        Penanggung Jawab
                     </div>
                     <div class="col-8">
-                        : {{$data->data->id_pegawai}}
+                        : {{$data_pegawai->data->nama}} ({{$data_pegawai->data->jabatan}}, {{$data_pegawai->data->divisi}})
                     </div>
                 </div>
                 <div class="row">
@@ -100,7 +100,7 @@
                         Tanggal
                     </div>
                     <div class="col-8">
-                        : {{date('d M Y', strtotime($data->data->created_at))}}
+                        : {{date('d M Y', strtotime($data_validasi['datetime']))}}
                     </div>
                 </div>
                 <div class="row">
@@ -108,7 +108,7 @@
                         Jam
                     </div>
                     <div class="col-8">
-                        : {{date('h:m:s', strtotime($data->data->created_at))}}
+                        : {{date('h:m:s', strtotime($data_validasi['datetime']))}}
                     </div>
                 </div>
                 <div class="row">
@@ -116,7 +116,7 @@
                         Jenis
                     </div>
                     <div class="col-8">
-                        : {{$data->data->arus}}
+                        : {{$data_validasi['jenis']}}
                     </div>
                 </div>
                 <div class="row">
@@ -124,7 +124,7 @@
                         Nama Transaksi
                     </div>
                     <div class="col-8">
-                        : {{$data->data->nama}}
+                        : {{$data_validasi['name']}}
                     </div>
                 </div>
                 <div class="row">
@@ -132,7 +132,7 @@
                         Deskripsi Transaksi
                     </div>
                     <div class="col-8">
-                        : {{$data->data->keterangan}}
+                        : {{$data_validasi['desc']}}
                     </div>
                 </div>
                 <div class="row">
@@ -140,7 +140,7 @@
                         Divisi
                     </div>
                     <div class="col-8">
-                        : {{$data->data->divisi}}
+                        : {{$data_validasi['divisi']}}
                     </div>
                 </div>
                 <div class="row">
@@ -148,15 +148,7 @@
                         Total Biaya
                     </div>
                     <div class="col-8">
-                        : Rp {{number_format($data->data->total_biaya, 0, ',', '.')}}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-4">
-                        Pegawai
-                    </div>
-                    <div class="col-8">
-                        : {{$data->data->id_pegawai}}
+                        : Rp {{number_format($data_validasi['total'], 0, ',', '.')}}
                     </div>
                 </div>
                 <div class="row">
@@ -164,14 +156,14 @@
                         Status
                     </div>
                     <div class="col-8">
-                        : {{$data->data->status}}
+                        : {{$data_validasi['status']}}
                     </div>
                 </div>
             </div>
         </div>
         <div class="row mt-5">
             <div class="col-12">
-                <h3>Validasi Arus Kas</h3>
+                <h4>Aksi Validasi Arus Kas</h4>
             </div>
             <div class="col-12">
                 <form action="{{route('view.validation.action', $data->data->id)}}" method="POST">

@@ -199,9 +199,86 @@ class ViewFinanceController extends Controller
         ]);
 
         $data = json_decode($response->getBody());
+
+        $id_pegawai = $data->data->id_pegawai;
+        $client = new Client(); //GuzzleHttp\Client
+        $url = "http://divisi-sdm.herokuapp.com/api/pegawai/$id_pegawai";
+
+        $response = $client->request('GET', $url, [
+            'verify'  => false,
+        ]);
+
+        $data_pegawai = json_decode($response->getBody());
         
-        // dd($data);
-        return view('validation',compact('data'));
+        $id_transaksi = $data->data->transaksi_id;
+        switch ($data->data->jenis) {
+            case 'penggajian':
+                $client = new Client(); //GuzzleHttp\Client
+                $url = "http://divisi-sdm.herokuapp.com/api/penggajian/$id_transaksi";
+
+                $response = $client->request('GET', $url, [
+                    'verify'  => false,
+                ]);
+
+                $validasi = json_decode($response->getBody());
+
+                //get pegawai
+                $id_pegawai = $validasi->values[0]->id_pegawai;
+                $client = new Client(); //GuzzleHttp\Client
+                $url = "http://divisi-sdm.herokuapp.com/api/pegawai/$id_pegawai";
+
+                $response = $client->request('GET', $url, [
+                    'verify'  => false,
+                ]);
+
+                $validasi_pegawai = json_decode($response->getBody());
+
+                $data_validasi = [
+                    'datetime' => $validasi->values[0]->created_at,
+                    'jenis' => 'keluar',
+                    'name' => 'Gaji kepada ' .$validasi_pegawai->data->nama
+                        . '('.$validasi_pegawai->data->jabatan.', '.$validasi_pegawai->data->divisi.')'
+                        . ' selama '. $validasi->values[0]->jam_kerja . ' jam dan dibayar pada ' 
+                        . date('d M Y', strtotime($validasi->values[0]->tanggal)),
+                    'desc' => $validasi->values[0]->keterangan,
+                    'divisi' => 'SDM',
+                    'total' => $validasi->values[0]->gaji,
+                    'status' => $validasi->values[0]->status,
+                ];
+
+                break;
+            
+            case 'pengiklanan':
+                $client = new Client(); //GuzzleHttp\Client
+                $url = "https://eai-sales.herokuapp.com/api/advertisement/$id_transaksi";
+
+                $response = $client->request('GET', $url, [
+                    'verify'  => false,
+                ]);
+
+                $validasi = json_decode($response->getBody());
+
+                $data_validasi = [
+                    'datetime' => $validasi->advertisement->created_at,
+                    'jenis' => 'keluar',
+                    'name' => $validasi->advertisement->title,
+                    'desc' => $validasi->advertisement->description,
+                    'divisi' => 'Sales',
+                    'total' => $validasi->advertisement->price,
+                    'status' => 'menunggu',
+                ];
+
+                break;
+            case 'pembelian':
+                # code...
+                break;
+            default:
+                # code...
+                break;
+        }
+        
+        // dd($data_validasi);
+        return view('validation',compact('data','data_pegawai', 'data_validasi'));
     }
 
     public function validationAction(Request $request, $id)
@@ -238,7 +315,47 @@ class ViewFinanceController extends Controller
             return redirect()->route('view.login');
         }
 
-        return view('kas');
+        $client = new Client(); //GuzzleHttp\Client
+        $url = "https://finance-ecommerce.herokuapp.com/api/kas";
+
+        $response = $client->request('GET', $url, [
+            'verify'  => false,
+        ]);
+
+        $data = json_decode($response->getBody());
+        
+        // dd($data);
+
+        return view('kas',compact('data'));
+    }
+
+    public function kasDelete(Request $request, $id)
+    {
+        if (!$request->session()->has('login')) {
+            return redirect()->route('view.login');
+        }
+
+        try {
+            $body = [
+                'id_arus_kas' => $id
+            ];
+
+            $client = new Client(); //GuzzleHttp\Client
+            $url = "https://finance-ecommerce.herokuapp.com/api/kas";
+
+            $response = $client->delete($url, [
+                'headers'         => ['Content-Type' => 'application/json'],
+                'body'            => json_encode($body),
+                'verify'  => false
+            ]);
+
+            $data = json_decode($response->getBody());
+
+            // dd($value);
+            return redirect()->route('view.kasIndex');
+        } catch (\Throwable $th) {
+            return redirect()->route('view.home');
+        }
     }
 
     public function login()
