@@ -17,7 +17,7 @@ class CreateArusKasTable extends Migration
             $table->bigIncrements('id');
             $table->integer('transaksi_id');
             $table->enum('arus', ['masuk', 'keluar']);
-            $table->enum('jenis', ['pengiklanan', 'pembelian', 'penggajian']);
+            $table->enum('jenis', ['pengiklanan', 'pembelian', 'penggajian', 'pengadaan']);
             $table->string('nama', 191);
             $table->text('keterangan')->nullable();;
             $table->enum('divisi', ['sales', 'sdm','warehouse','finance']);
