@@ -186,14 +186,14 @@ class ViewFinanceController extends Controller
             ->get()->toArray();
         $arus_keluar_labels = array_column($label, 'data');
         
-        $arus_kas_masuk = DB::table('arus_kas')
-                    ->select(DB::raw('COUNT(total_biaya) as count'))
-                    ->where('arus', '=', 'masuk')
-                    ->get();  
-        $arus_kas_keluar = DB::table('arus_kas')
-                ->select(DB::raw('COUNT(total_biaya) as count'))
-                ->where('arus', '=', 'keluar')
-                ->get(); 
+        // $arus_kas_masuk = DB::table('arus_kas')
+        //             ->select(DB::raw('COUNT(total_biaya) as count'))
+        //             ->where('arus', '=', 'masuk')
+        //             ->get();  
+        // $arus_kas_keluar = DB::table('arus_kas')
+        //         ->select(DB::raw('COUNT(total_biaya) as count'))
+        //         ->where('arus', '=', 'keluar')
+        //         ->get(); 
 
         // dd($arus_kas_keluar);
         $client = new Client(); //GuzzleHttp\Client
@@ -205,7 +205,7 @@ class ViewFinanceController extends Controller
 
         $data = json_decode($response->getBody());
         
-        return view('status',compact('data','arus_kas_masuk','arus_kas_keluar'))
+        return view('status',compact('data'))
         ->with('arus_masuk_data',json_encode($arus_masuk_datas,JSON_NUMERIC_CHECK))
         ->with('arus_masuk_label',json_encode($arus_masuk_labels,JSON_NUMERIC_CHECK))
         ->with('arus_keluar_data',json_encode($arus_keluar_datas,JSON_NUMERIC_CHECK))

@@ -37,15 +37,15 @@
         </div>
         <div class="col-3 text-center">
             <div class="card text-white bg-app mb-3" style="max-width: 18rem;">
-                <div class="card-header">ARUS MASUK</div>
+                <div class="card-header">TRANSAKSI BERHASIL</div>
                 <div class="card-body">
-                    <h1 class="card-title">{{$arus_kas_masuk[0]->count}}</h1>
+                    <h1 class="card-title">128</h1>
                 </div>
             </div>
             <div class="card text-white bg-app mb-3 mt-5" style="max-width: 18rem;">
-                <div class="card-header">Arus Keluar</div>
+                <div class="card-header">TRANSAKSI GAGAL</div>
                 <div class="card-body">
-                    <h1 class="card-title">{{$arus_kas_keluar[0]->count}}</h1>
+                    <h1 class="card-title">14</h1>
                 </div>
             </div>
         </div>
