@@ -155,7 +155,7 @@ class ViewFinanceController extends Controller
         }
 
         $data = DB::table('arus_kas')
-            ->select(DB::raw('sum(`total_biaya`) as data'))
+            ->select(DB::raw('sum(total_biaya) as data'))
             ->groupBy(DB::raw("DATE(created_at)"))
             ->orderBy(DB::raw("DATE(created_at)"), 'asc')
             ->where([['arus', '=', 'masuk']])
@@ -171,7 +171,7 @@ class ViewFinanceController extends Controller
         $arus_masuk_labels = array_column($label, 'data');
 
         $data = DB::table('arus_kas')
-            ->select(DB::raw('sum(`total_biaya`) as data'))
+            ->select(DB::raw('sum(total_biaya) as data'))
             ->groupBy(DB::raw("DATE(created_at)"))
             ->orderBy(DB::raw("DATE(created_at)"), 'asc')
             ->where([['arus', '=', 'keluar'],['status', '=', 'diterima']])
