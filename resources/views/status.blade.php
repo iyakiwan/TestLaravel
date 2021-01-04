@@ -30,19 +30,22 @@
                 </div>
             </div>
             <h3 class="mt-3">Data Statistik</h3>
-            <canvas id="myChart" class="mt-3" height="150"></canvas>
+            <h4 class="mt-2">Arus Masuk</h4>
+            <canvas id="myChartMasuk" class="mt-3" height="150"></canvas>
+            <h4 class="mt-2">Arus Keluar</h4>
+            <canvas id="myChartKeluar" class="mt-3" height="150"></canvas>
         </div>
         <div class="col-3 text-center">
             <div class="card text-white bg-app mb-3" style="max-width: 18rem;">
-                <div class="card-header">TRANSAKSI BERHASIL</div>
+                <div class="card-header">ARUS MASUK</div>
                 <div class="card-body">
-                    <h1 class="card-title">128</h1>
+                    <h1 class="card-title">{{$arus_kas_masuk[0]->count}}</h1>
                 </div>
             </div>
             <div class="card text-white bg-app mb-3 mt-5" style="max-width: 18rem;">
-                <div class="card-header">TRANSAKSI GAGAL</div>
+                <div class="card-header">Arus Keluar</div>
                 <div class="card-body">
-                    <h1 class="card-title">14</h1>
+                    <h1 class="card-title">{{$arus_kas_keluar[0]->count}}</h1>
                 </div>
             </div>
         </div>
@@ -50,29 +53,51 @@
 @endsection
 @push('script')
     <script>
-        var ctx = document.getElementById('myChart').getContext('2d');
-        var myChart = new Chart(ctx, {
+        var arus_masuk_label = <?php echo $arus_masuk_label; ?>;
+        var arus_masuk_data = <?php echo $arus_masuk_data; ?>;
+        var arus_keluar_label = <?php echo $arus_keluar_label; ?>;
+        var arus_keluar_data = <?php echo $arus_keluar_data; ?>;
+        
+        var ctxMasuk = document.getElementById('myChartMasuk').getContext('2d');
+        var ctxKeluar = document.getElementById('myChartKeluar').getContext('2d');
+        var myChartMasuk = new Chart(ctxMasuk, {
             type: 'line',
             data: {
-                labels: ['01/12/2020', '02/12/2020', '03/12/2020', '04/12/2020', '05/12/2020', '06/12/2020'],
+                labels: arus_masuk_label,
                 datasets: [{
-                    label: '# Penjualan',
-                    data: [10000, 20000, 50000, 7500, 10000, 34500],
+                    label: 'Arus Masuk',
+                    data: arus_masuk_data,
                     backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
+                        'rgba(255, 99, 132, 0.2)'
                     ],
                     borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
+                        'rgba(255, 99, 132, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+        var myChartKeluar = new Chart(ctxKeluar, {
+            type: 'line',
+            data: {
+                labels: arus_keluar_label,
+                datasets: [{
+                    label: 'Arus Keluar',
+                    data: arus_keluar_data,
+                    backgroundColor: [
+                        'rgba(54, 162, 235, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(54, 162, 235, 1)'
                     ],
                     borderWidth: 1
                 }]

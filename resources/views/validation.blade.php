@@ -77,7 +77,7 @@
                         Penanggung Jawab
                     </div>
                     <div class="col-8">
-                        : {{$data_pegawai->data->nama}} ({{$data_pegawai->data->jabatan}}, {{$data_pegawai->data->divisi}})
+                        : {{$data_pegawai->data->username}} ({{$data_pegawai->data->role}}, {{$data->data->divisi}})
                     </div>
                 </div>
                 <div class="row">
