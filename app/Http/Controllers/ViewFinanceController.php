@@ -188,11 +188,11 @@ class ViewFinanceController extends Controller
         
         $arus_kas_masuk = DB::table('arus_kas')
                     ->select(DB::raw('COUNT(total_biaya) as count'))
-                    ->where([['arus', '=', 'masuk']])
+                    ->where('arus', '=', 'masuk')
                     ->get();  
         $arus_kas_keluar = DB::table('arus_kas')
                 ->select(DB::raw('COUNT(total_biaya) as count'))
-                ->where([['arus', '=', 'keluar']])
+                ->where('arus', '=', 'keluar')
                 ->get(); 
 
         // dd($arus_kas_keluar);
