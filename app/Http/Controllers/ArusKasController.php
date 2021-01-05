@@ -18,7 +18,7 @@ class ArusKasController extends Controller
             'jenis' => 'required',
             'keterangan' => 'required',
             'divisi' => 'required',
-            'biaya' => 'required|nullable|regex:/^\d*(\.\d{2})?$/',
+            'biaya' => 'required',
         ]);
         return $validator;
     }
