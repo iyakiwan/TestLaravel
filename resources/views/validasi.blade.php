@@ -2,10 +2,8 @@
 
 @section('content')
     <div class="row">
-        <div class="col-8">
+        <div class="col-12">
             <h3>Validasi Arus Kas</h3>
-        </div>
-        <div class="col-4 text-center">
         </div>
     </div>
     <table class="table mt-5">

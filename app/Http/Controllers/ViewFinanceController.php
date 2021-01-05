@@ -257,93 +257,164 @@ class ViewFinanceController extends Controller
         $data_pegawai = json_decode($response->getBody());
         
         $id_transaksi = $data->data->transaksi_id;
-        // switch ($data->data->jenis) {
-        //     case 'penggajian':
-        //         $client = new Client(); //GuzzleHttp\Client
-        //         $url = "http://divisi-sdm.herokuapp.com/api/penggajian/$id_transaksi";
+        switch ($data->data->jenis) {
+            case 'penggajian':
+                $client = new Client(); //GuzzleHttp\Client
+                $url = "http://divisi-sdm.herokuapp.com/api/penggajian/$id_transaksi";
 
-        //         $response = $client->request('GET', $url, [
-        //             'verify'  => false,
-        //         ]);
+                $response = $client->request('GET', $url, [
+                    'verify'  => false,
+                ]);
 
-        //         $validasi = json_decode($response->getBody());
+                $validasi = json_decode($response->getBody());
 
-        //         //get pegawai
-        //         $id_pegawai = $validasi->values[0]->id_pegawai;
-        //         $client = new Client(); //GuzzleHttp\Client
-        //         $url = "http://divisi-sdm.herokuapp.com/api/pegawai/$id_pegawai";
+                //get pegawai
+                $id_pegawai = $validasi->values[0]->id_pegawai;
+                $client = new Client(); //GuzzleHttp\Client
+                $url = "http://divisi-sdm.herokuapp.com/api/pegawai/$id_pegawai";
 
-        //         $response = $client->request('GET', $url, [
-        //             'verify'  => false,
-        //         ]);
+                $response = $client->request('GET', $url, [
+                    'verify'  => false,
+                ]);
 
-        //         $validasi_pegawai = json_decode($response->getBody());
+                $validasi_pegawai = json_decode($response->getBody());
 
-        //         $data_validasi = [
-        //             'datetime' => $validasi->values[0]->created_at,
-        //             'jenis' => 'keluar',
-        //             'name' => 'Gaji kepada ' .$validasi_pegawai->data->nama
-        //                 . '('.$validasi_pegawai->data->jabatan.', '.$validasi_pegawai->data->divisi.')'
-        //                 . ' selama '. $validasi->values[0]->jam_kerja . ' jam dan dibayar pada ' 
-        //                 . date('d M Y', strtotime($validasi->values[0]->tanggal)),
-        //             'desc' => $validasi->values[0]->keterangan,
-        //             'divisi' => 'SDM',
-        //             'total' => $validasi->values[0]->gaji,
-        //             'status' => $validasi->values[0]->status,
-        //         ];
+                $data_validasi = [
+                    'datetime' => $validasi->values[0]->created_at,
+                    'jenis' => 'keluar',
+                    'name' => 'Gaji kepada ' .$validasi_pegawai->data->nama
+                        . '('.$validasi_pegawai->data->jabatan.', '.$validasi_pegawai->data->divisi.')'
+                        . ' selama '. $validasi->values[0]->jam_kerja . ' jam dan dibayar pada ' 
+                        . date('d M Y', strtotime($validasi->values[0]->tanggal)),
+                    'desc' => $validasi->values[0]->keterangan,
+                    'divisi' => 'SDM',
+                    'total' => $validasi->values[0]->gaji,
+                    'status' => $validasi->values[0]->status,
+                ];
 
-        //         break;
+                break;
             
-        //     case 'pengiklanan':
-        //         $client = new Client(); //GuzzleHttp\Client
-        //         $url = "https://eai-sales.herokuapp.com/api/advertisement/$id_transaksi";
+            case 'pengiklanan':
+                $client = new Client(); //GuzzleHttp\Client
+                $url = "https://eai-sales.herokuapp.com/api/advertisement/$id_transaksi";
 
-        //         $response = $client->request('GET', $url, [
-        //             'verify'  => false,
-        //         ]);
+                $response = $client->request('GET', $url, [
+                    'verify'  => false,
+                ]);
 
-        //         $validasi = json_decode($response->getBody());
+                $validasi = json_decode($response->getBody());
 
-        //         $data_validasi = [
-        //             'datetime' => $validasi->advertisement->created_at,
-        //             'jenis' => 'keluar',
-        //             'name' => $validasi->advertisement->title,
-        //             'desc' => $validasi->advertisement->description,
-        //             'divisi' => 'Sales',
-        //             'total' => $validasi->advertisement->price,
-        //             'status' => 'menunggu',
-        //         ];
+                $data_validasi = [
+                    'datetime' => $validasi->advertisement->created_at,
+                    'jenis' => 'keluar',
+                    'name' => $validasi->advertisement->title,
+                    'desc' => $validasi->advertisement->description,
+                    'divisi' => 'Sales',
+                    'total' => $validasi->advertisement->price,
+                    'status' => 'menunggu',
+                ];
 
-        //         break;
-        //     case 'pembelian':
-        //         # code...
-        //         break;
-        //     case 'pengadaan':
-        //         # code...
-        //         break;
-        //     default:
-        //         $data_validasi = [
-        //             'datetime' => $data->created_at,
-        //             'jenis' => $data->arus,
-        //             'name' => $data->name,
-        //             'desc' => $data->keterangan,
-        //             'divisi' => $data->divisi,
-        //             'total' => $data->total,
-        //             'status' => $data->status,
-        //         ];
-        //         break;
-        // }
+                break;
+            case 'pembelian':
+                $client = new Client(); //GuzzleHttp\Client
+                $url = "http://eai-sales.herokuapp.com/api/transaction/$id_transaksi";
+
+                $response = $client->request('GET', $url, [
+                    'verify'  => false,
+                ]);
+
+                $validasi = json_decode($response->getBody());
+
+                $client = new Client(); //GuzzleHttp\Client
+                $url = "https://enterprise-warehouse.000webhostapp.com/getdatabarang.php";
+
+                $response = $client->request('GET', $url, [
+                    'verify'  => false,
+                ]);
+
+                $barang = json_decode($response->getBody());
+
+                // dd($validasi);
+                foreach ($barang->item as $key => $isi) {
+                    if ($isi->id_barang == $validasi->transactions->barang_id) {
+                        $data_validasi = [
+                            'datetime' => $validasi->transactions->created_at,
+                            'jenis' => 'masuk',
+                            'name' => "Pembelian barang ". $isi->nama_barang,
+                            'desc' => "Pembelian sebanyak ".$validasi->transactions->amount. " dan telah berstatus ". $validasi->transactions->status,
+                            'divisi' => 'Sales',
+                            'total' => $validasi->transactions->total_price,
+                            'status' => 'menunggu',
+                        ];
+                        break;
+                    }
+                }
+                break;
+            case 'pengadaan':
+                $client = new Client(); //GuzzleHttp\Client
+                $url = "https://enterprise-warehouse.000webhostapp.com/Getio_barang.php";
+
+                $response = $client->request('GET', $url, [
+                    'verify'  => false,
+                ]);
+
+                $validasi = json_decode($response->getBody());
+
+                // dd($validasi);
+                foreach ($validasi->item as $key => $value) {
+                    if ((int)$value->no_io == $id_transaksi) {
+                        $client = new Client(); //GuzzleHttp\Client
+                        $url = "https://enterprise-warehouse.000webhostapp.com/getdatabarang.php";
+
+                        $response = $client->request('GET', $url, [
+                            'verify'  => false,
+                        ]);
+
+                        $barang = json_decode($response->getBody());
+
+                        // dd($barang);
+                        foreach ($barang->item as $key => $isi) {
+                            if ($isi->id_barang == $value->id_barang) {
+                                $data_validasi = [
+                                    'datetime' => $value->timestamp,
+                                    'jenis' => 'keluar',
+                                    'name' => "Pengadaan " . $isi->nama_barang,
+                                    'desc' => "Pebagadaan sebanyak ". $value->Kuantitas . " dengan harga " . $value->Harga_Modal ,
+                                    'divisi' => 'Warehouse',
+                                    'total' => $value->Total_Harga,
+                                    'status' => 'menunggu',
+                                ];
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }               
+                
+                break;
+            default:
+                $data_validasi = [
+                    'datetime' => $data->created_at,
+                    'jenis' => $data->arus,
+                    'name' => $data->name,
+                    'desc' => $data->keterangan,
+                    'divisi' => $data->divisi,
+                    'total' => $data->total,
+                    'status' => $data->status,
+                ];
+                break;
+        }
         
-        // dd($data_pegawai);
-        $data_validasi = [
-            'datetime' => $data->data->created_at,
-            'jenis' => $data->data->arus,
-            'name' => $data->data->nama,
-            'desc' => $data->data->keterangan,
-            'divisi' => $data->data->divisi,
-            'total' => $data->data->total_biaya,
-            'status' => $data->data->status,
-        ];
+        // dd($data_validasi);
+        // $data_validasi = [
+        //     'datetime' => $data->data->created_at,
+        //     'jenis' => $data->data->arus,
+        //     'name' => $data->data->nama,
+        //     'desc' => $data->data->keterangan,
+        //     'divisi' => $data->data->divisi,
+        //     'total' => $data->data->total_biaya,
+        //     'status' => $data->data->status,
+        // ];
         // dd($data_validasi);
         return view('validation',compact('data','data_pegawai', 'data_validasi'));
     }
