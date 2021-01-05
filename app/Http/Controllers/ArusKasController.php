@@ -12,12 +12,12 @@ class ArusKasController extends Controller
     protected function arusKasValidation(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'transaksi_id' => 'required|integer',
-            'pegawai_id' => 'required|integer',
-            'nama' => 'required|string',
-            'jenis' => 'required|string',
-            'keterangan' => 'required|string',
-            'divisi' => 'required|string',
+            'transaksi_id' => 'required',
+            'pegawai_id' => 'required',
+            'nama' => 'required',
+            'jenis' => 'required',
+            'keterangan' => 'required',
+            'divisi' => 'required',
             'biaya' => 'required|nullable|regex:/^\d*(\.\d{2})?$/',
         ]);
         return $validator;
